@@ -1,0 +1,166 @@
+/* ═══════════════════════════════════════════════
+   HidroLog Amazônia — JavaScript Principal
+   Versão 1.0 | 2025
+═══════════════════════════════════════════════ */
+
+'use strict';
+
+/* ── NAVEGAÇÃO ENTRE PÁGINAS ── */
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(function(p) {
+    p.classList.remove('active');
+  });
+  var target = document.getElementById('page-' + id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+  // Atualiza links ativos no navbar
+  document.querySelectorAll('.nav-links a').forEach(function(a) {
+    a.classList.toggle('nav-active', a.dataset.page === id);
+  });
+  // Fecha menu mobile se aberto
+  closeMobileMenu();
+  return false;
+}
+
+/* ── MENU MOBILE ── */
+function toggleMobileMenu() {
+  var menu = document.getElementById('nav-mobile');
+  menu.classList.toggle('open');
+  // Anima hamburger
+  var ham = document.querySelector('.nav-hamburger');
+  if (ham) ham.classList.toggle('active');
+}
+
+function closeMobileMenu() {
+  var menu = document.getElementById('nav-mobile');
+  if (menu) menu.classList.remove('open');
+  var ham = document.querySelector('.nav-hamburger');
+  if (ham) ham.classList.remove('active');
+}
+
+/* ── NAVBAR SCROLL SHADOW ── */
+function handleNavbarScroll() {
+  var navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+  if (window.scrollY > 20) {
+    navbar.classList.add('scrolled');
+  } else {
+    navbar.classList.remove('scrolled');
+  }
+}
+
+/* ── VALIDAÇÃO E ENVIO DO FORMULÁRIO DE CONTATO ── */
+function validateField(id, message) {
+  var el = document.getElementById(id);
+  if (!el) return true;
+  var group = el.closest('.form-group');
+  var errorEl = group ? group.querySelector('.form-error') : null;
+  var valid = el.value.trim() !== '';
+
+  if (!valid) {
+    if (group) group.classList.add('has-error');
+    if (errorEl) errorEl.textContent = message;
+  } else {
+    if (group) group.classList.remove('has-error');
+  }
+  return valid;
+}
+
+function validateEmail(id) {
+  var el = document.getElementById(id);
+  if (!el) return true;
+  var group = el.closest('.form-group');
+  var errorEl = group ? group.querySelector('.form-error') : null;
+  var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  var valid = re.test(el.value.trim());
+
+  if (!valid) {
+    if (group) group.classList.add('has-error');
+    if (errorEl) errorEl.textContent = 'Por favor, insira um e-mail válido.';
+  } else {
+    if (group) group.classList.remove('has-error');
+  }
+  return valid;
+}
+
+function submitForm() {
+  var ok = true;
+  ok = validateField('f-nome', 'Por favor, informe seu nome.') && ok;
+  ok = validateEmail('f-email') && ok;
+  ok = validateField('f-assunto', 'Por favor, selecione um assunto.') && ok;
+  ok = validateField('f-msg', 'Por favor, escreva sua mensagem.') && ok;
+
+  if (!ok) return;
+
+  // Simula envio (substituir por fetch() real com backend)
+  var btn = document.getElementById('submit-btn');
+  if (btn) {
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+  }
+
+  setTimeout(function() {
+    var form = document.getElementById('contact-form');
+    var success = document.getElementById('form-success');
+    if (form) form.style.display = 'none';
+    if (success) success.classList.add('show');
+  }, 900);
+}
+
+/* ── ANIMAÇÃO DE ENTRADA (Intersection Observer) ── */
+function initAnimations() {
+  if (!('IntersectionObserver' in window)) return;
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+  document.querySelectorAll('.svc-mini, .testi-card, .value-card, .plan-card, .tech-card, .river-card, .office-card').forEach(function(el) {
+    el.classList.add('fade-in');
+    observer.observe(el);
+  });
+}
+
+/* ── INICIALIZAÇÃO ── */
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Previne navegação padrão nos links internos
+  document.querySelectorAll('.nav-links a, .nav-mobile a').forEach(function(a) {
+    a.addEventListener('click', function(e) { e.preventDefault(); });
+  });
+
+  // Scroll do navbar
+  window.addEventListener('scroll', handleNavbarScroll, { passive: true });
+
+  // Animações
+  initAnimations();
+
+  // Feedback live no formulário
+  ['f-nome', 'f-email', 'f-msg'].forEach(function(id) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener('blur', function() {
+      if (id === 'f-email') {
+        validateEmail(id);
+      } else {
+        if (el.value.trim() === '') {
+          var g = el.closest('.form-group');
+          if (g) g.classList.add('has-error');
+        } else {
+          var g = el.closest('.form-group');
+          if (g) g.classList.remove('has-error');
+        }
+      }
+    });
+  });
+
+  console.log('%cHidroLog Amazônia v1.0', 'color:#3ECFA0;font-weight:bold;font-size:14px;');
+  console.log('%cLogística Hidroviária Inteligente', 'color:#8A9B94;');
+});
