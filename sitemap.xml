@@ -1,39 +1,28 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://hidrolog.com.br/</loc>
-    <lastmod>2025-03-15</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://hidrolog.com.br/#servicos</loc>
-    <lastmod>2025-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
-  </url>
-  <url>
-    <loc>https://hidrolog.com.br/#cobertura</loc>
-    <lastmod>2025-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://hidrolog.com.br/#tecnologia</loc>
-    <lastmod>2025-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://hidrolog.com.br/#sobre</loc>
-    <lastmod>2025-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://hidrolog.com.br/#contato</loc>
-    <lastmod>2025-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-</urlset>
+# ═══════════════════════════════════════════════
+# HidroLog Amazônia — GitHub Pages Configuration
+# ═══════════════════════════════════════════════
+
+# Título e descrição do site
+title: "HidroLog Amazônia"
+description: "Logística Hidroviária Inteligente para o Amazonas"
+url: ""  # Deixe vazio; será preenchido automaticamente pelo GitHub Pages
+
+# Desabilita o processamento Jekyll para arquivos com underscore
+# e para evitar conflitos com assets
+exclude:
+  - README.md
+  - "*.sh"
+
+# Permite que arquivos com underscore sejam servidos corretamente
+include:
+  - _headers
+
+# Configurações de Jekyll (mínimas — o site é estático puro)
+markdown: kramdown
+highlighter: rouge
+
+# Permalink padrão para páginas
+permalink: pretty
+
+# Tema — sem tema (site totalmente customizado)
+theme: null
